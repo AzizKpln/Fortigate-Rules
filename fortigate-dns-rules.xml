@@ -1,0 +1,34 @@
+<!-- 
+
+Fortigate Firewall Custom DNS Query Rules
+author: Aziz Kaplan <aziz.kaplan@infinitumit.com.tr>
+github: https://github.com/AzizKpln
+
+-->
+
+<group name="fortigate,syslog,">
+    
+    <rule id="811600" level="0">
+        <decoded_as>fortigate-firewall-dns-v1</decoded_as>
+        <description>Fortigate Firewall DNS V1 messages grouped.</description>
+    </rule>
+    
+    <rule id="811601" level="0">
+        <decoded_as>fortigate-firewall-dns-v2</decoded_as>
+        <description>Fortigate Firewall DNS V2 messages grouped.</description>
+    </rule>
+    
+    <rule id="811603" level="0">
+        <if_sid>811600,811601</if_sid>
+        <description>Fortigate messages grouped.</description>
+    </rule>
+    
+    <rule id="811604" level="4">
+        <if_sid>811603</if_sid>
+        <status>dns_query</status>
+        <description>Fortigate DNS Query: From $(win.eventdata.user) To $(win.eventdata.qname)</description>
+        <options>no_full_log</options>
+    </rule>
+    
+  
+</group>
