@@ -1,34 +1,244 @@
 <!-- 
 
-Fortigate Firewall Custom DNS Query Rules
+Fortigate Firewall Advanced Custom Rules
 author: Aziz Kaplan <aziz.kaplan@infinitumit.com.tr>
 github: https://github.com/AzizKpln
 
 -->
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
 
 <group name="fortigate,syslog,">
-    
-    <rule id="811600" level="0">
-        <decoded_as>fortigate-firewall-dns-v1</decoded_as>
-        <description>Fortigate Firewall DNS V1 messages grouped.</description>
-    </rule>
-    
-    <rule id="811601" level="0">
-        <decoded_as>fortigate-firewall-dns-v2</decoded_as>
-        <description>Fortigate Firewall DNS V2 messages grouped.</description>
-    </rule>
-    
-    <rule id="811603" level="0">
-        <if_sid>811600,811601</if_sid>
-        <description>Fortigate messages grouped.</description>
-    </rule>
-    
-    <rule id="811604" level="4">
-        <if_sid>811603</if_sid>
-        <status>dns_query</status>
-        <description>Fortigate DNS Query: From $(win.eventdata.user) To $(win.eventdata.qname)</description>
-        <options>no_full_log</options>
-    </rule>
-    
+  <!--DNS Rules-->
+  <rule id="811605" level="4">
+    <if_sid>81608</if_sid>
+    <regex>eventtype="dns-response"|eventtype="dns-query"</regex>
+    <description>DNS Query From $(srcip) To $(qname)</description>
+  </rule>
+  <rule id="811650" level="4">
+    <if_sid>81608</if_sid>
+    <regex>msg="A rating error occurs"</regex>
+    <description>Rating Error Due To $(error) $(warning) $(info) - Source $(srcip) to $(url)</description>
+  </rule>
+  <!--VPN Rules-->
+  <rule id="811608" level="4">
+    <if_sid>81608</if_sid>
+    <regex>mastersrcmac="(\S+)"</regex>
+    <description>Fortigate Traffic Forwarded - Source:$(srcip)|Service:$(service)|Destination:$(dstip)</description>
+  </rule>
   
+  <rule id="811607" level="4">
+    <if_sid>81608</if_sid>
+    <regex>vpntunnel="(\S+)"</regex>  
+    <description>$(msg) - Action From $(locip)$(srcip) To $(ip)$(remip)</description>
+  </rule>
+  <rule id="811609" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="FortiClient connection added"</regex>  
+    <description>$(logdesc) - $(dstuser):$(ip)</description>
+  </rule>
+  <rule id="811610" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="FortiClient connection closed"</regex>  
+    <description>$(logdesc) - $(dstuser):$(ip)</description>
+  </rule>
+  <!--Sniffer Traffic Rules-->
+  <rule id="811611" level="4">
+    <if_sid>81608</if_sid>
+    <regex>subtype="sniffer"</regex>  
+    <description>Sniffer Trafic:$(srcip):$(srcport) To $(dstip):$(dstport)</description>
+  </rule>
+  <!--System Traffic Rules-->
+   <rule id="811612" level="4">
+    <if_sid>81608</if_sid>
+    <regex>method="ssh"</regex>  
+    <description>Successfull SSH Connection From: $(ip)</description>
+  </rule>
+  <rule id="811613" level="4">
+    <if_sid>81608</if_sid>
+    <regex>authproto="TELNET(\S+)"</regex>  
+    <description>Successfull TELNET Connection From: $(srcip)</description>
+  </rule>
+  <!--WAN Opt & Cache Event Rules-->
+  <rule id="811614" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="SSL fatal alert sent"</regex>  
+    <description>$(msg) - Action From $(srcip) to $(dstip)</description>
+  </rule>
+  <rule id="811615" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="SSL Fatal Alert received"</regex>  
+    <description>$(msg) - Action From $(srcip) to $(dstip)</description>
+  </rule>
+  <!--Wireless Event Rules-->
+  <rule id="811616" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="Fake AP on air"</regex>  
+    <description>$(msg)</description>
+    <!--mac is described with bssid=-->
+  </rule>
+  <!--SDN Connector Rules-->
+  <rule id="811617" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="IP address added"</regex>  
+    <description>$(msg)</description>
+  </rule>
+  <rule id="811618" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="IP address removed"</regex>  
+    <description>$(msg)</description>
+  </rule>
+  <!--IOC Detection Rules-->
+  <rule id="811619" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="Locally generated traffic goes to IoC location"</regex>  
+    <description>Traffic Goes To IoC Location - Source: $(srcip) To $(dstip)</description>
+  </rule>
+  <!--Antivirus Log Rules-->
+  <rule id="811620" level="12">
+    <if_sid>81608</if_sid>
+    <regex>msg="File is infected."</regex>  
+    <description>Infected File Detected: $(filename) - Source: $(srcip) - $(url)</description>
+  </rule>
+  <rule id="811621" level="12">
+    <if_sid>81608</if_sid>
+    <regex>catdesc="Malicious Websites"</regex>  
+    <description>Request To A Malicous Website - Source: $(srcip) To $(url)</description>
+  </rule>
+  <!-- Application Logs
+  <rule id="811622" level="3">
+    <if_sid>81608</if_sid>
+    <regex>app="(\S+)"</regex>  
+    <description>Application Log: $(msg) - Source: $(srcip) </description>
+  </rule>-->
+  <!-- Intrusion Prevention Rules-->
+  <rule id="811623" level="12">
+    <if_sid>81608</if_sid>
+    <regex>attack="(\S+)"</regex>  
+    <description>$(msg) - Source: $(srcip) | $(hostname)</description>
+  </rule>
+  <!-- SSH Deep Scan Rules-->
+  <rule id="811624" level="6">
+    <if_sid>81608</if_sid>
+    <regex>profile="ssh-deepscan"</regex>  
+    <description>SSH Deep Scan Action Blocked From $(dstip) - Source: Source $(srcip)</description>
+  </rule>
+  <!-- SSL Anomaliy Rules-->
+  <rule id="811625" level="6">
+    <if_sid>81608</if_sid>
+    <regex>eventtype="ssl-anomalies"</regex>  
+    <description>SSL Certificate Blocked From $(dstip) - Source: Source $(srcip)</description>
+  </rule>
+  <rule id="811626" level="6">
+    <if_sid>81608</if_sid>
+    <regex>eventtype="ssl-negotiation"</regex>  
+    <description>SSL Connection Blocked From $(dstip) - Source: Source $(srcip)</description>
+  </rule>
+  <!-- Aug 23 01:05:28 fortigate.local date=2022-08-23 time=01:05:28 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661231127465281933 tz="-0400" logid="0100044547" type="event" subtype="system" level="information" vd="root" logdesc="Object attribute configured" user="admin" ui="GUI(x.x.x.x)" action="Add" cfgtid=6881300 cfgpath="firewall.policy" cfgobj="8" cfgattr="uuid[3249c840-22a1-51ed-dbb6-54082b2b52c4]name[TEST-TEST]srcintf[internal]dstintf[internal]action[accept]srcaddr[all]dstaddr[EDR]srcaddr6[]dstaddr6[]src-vendor-mac[]schedule[always]service[ALL]groups[]users[]fsso-groups[]comments[TEST]custom-log-fields[]" msg="Add firewall.policy 8"-->
+  <rule id="811627" level="10">
+    <if_sid>81608</if_sid>
+    <match>Object attribute configured|Attribute configured|Global time setting changed by user|Global setting changed</match>
+    <description>Fortigate Configuration Changed - Source: $(dstuser)</description>
+  </rule>
+  <!--Aug 23 00:50:17 fortigate.local date=2022-08-23 time=00:50:16 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661230216480453628 tz="-0400" logid="0100032001" type="event" subtype="system" level="information" vd="root" logdesc="Admin login successful" sn="1661230216" user="admin" ui="https(x.x.x.x)" method="https" srcip=x.x.x.x dstip=x.x.x.x action="login" status="success" reason="none" profile="super_admin" msg="Administrator admin logged in successfully from https(x.x.x.x)"
+-->
+  <rule id="811628" level="4">
+    <if_sid>81608</if_sid>
+    <match>Admin login successful</match> 
+    <description>Successfull Admin Login From: $(dstuser)</description>
+  </rule>
+  <rule id="811650" level="3">
+    <if_sid>81608</if_sid>
+    <match>Admin logout successful</match>
+    <description>Fortigate: Account logout successful</description>
+  </rule>
+  <rule id="811651" level="10">
+    <if_sid>81608</if_sid>
+    <field name="type">^event$</field>
+    <field name="subtype">^system$</field>
+    <field name="actions">^login$</field>
+    <field name="status_fg">^failed$</field>
+    <field name="reason">^exceed_limit$</field>
+    <description>Fortigate: Login Disabled</description>
+  </rule>
+  
+<!--
+Aug 22 23:41:55 fortigate.local date=2022-08-22 time=23:41:55 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661226115385449184 tz="-0400" logid="0100032021" type="event" subtype="system" level="alert" vd="root" logdesc="Admin login disabled" ui="x.x.x.x" action="login" status="failed" reason="exceed_limit" msg="Login disabled from IP x.x.x.x for 60 seconds because of 3 bad attempts"
+-->
+  <rule id="811628" level="4">
+    <if_sid>81608</if_sid>
+    <regex>logdesc="Admin login disabled"</regex>  
+    <description>Admin Login Disabled Due To 3 Failed Attempt</description>
+  </rule>
+ <!--Aug 22 23:05:25 fortigate.local date=2022-08-22 time=23:05:25 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661223925455233662 tz="-0400" logid="0100032002" type="event" subtype="system" level="alert" vd="root" logdesc="Admin login failed" sn="0" user="asdasdasd" ui="https(x.x.x.x)" method="https" srcip=x.x.x.x dstip=x.x.x.x action="login" status="failed" reason="name_invalid" msg="Administrator asdasdasd login failed from https(x.x.x.x) because of invalid user name"-->
+  <rule id="811629" level="4">
+    <if_sid>81608</if_sid>
+    <regex>reason="name_invalid"</regex>  
+    <description>Admin Login Failed - Source: $(dstuser):$(srcip)</description>
+  </rule>
+  
+  <!--Aug 22 21:02:25 fortigate.local date=2022-08-22 time=21:02:25 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661216544233315652 tz="-0400" logid="0107045124" type="event" subtype="endpoint" level="warning" vd="root" logdesc="FortiClient VPN connected" ip=10.212.134.200 fctuid="82FD2B5D62BF9E611DE857B012BC9D3F" sn="FGT60ETKXXXXXXXX" intf="wan1" user="user_name" msg="FortiClient VPN is connected."-->
+  <rule id="811630" level="3">
+     <if_sid>81608</if_sid>
+     <match>FortiClient VPN is connected</match>
+     <description>FortiClient VPN is connected - Source::$(dstuser):$(srcip)$(ip)</description>
+     <group>VPN</group>
+
+</rule>
+  
+  <!--Aug 22 21:02:25 fortigate.local date=2022-08-22 time=21:02:25 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661216544386155988 tz="-0400" logid="0101039947" type="event" subtype="vpn" level="information" vd="root" logdesc="SSL VPN tunnel up" action="tunnel-up" tunneltype="ssl-tunnel" tunnelid=1552377657 remip=x.x.x.x tunnelip=10.212.134.200 user="user_name" group="user_group" dst_host="N/A" reason="tunnel established" msg="SSL tunnel established"-->
+  <rule id="811631" level="3">
+     <if_sid>81608</if_sid>
+     <match>SSL VPN tunnel up</match>
+     <description>Fortigate SSL VPN tunnel up - Source: $(dstuser):$(tunnelip)$(srcip) | $(remip)$(dstip)</description>
+     <group>VPN</group>
+  </rule>
+  <rule id="811632" level="10">
+    <if_sid>81608</if_sid>
+    <match>Device in the Security Fabric was updated.</match>
+    <description>Fortigate:  Security Fabric was updated</description>
+</rule>
+ <rule id="811633" level="3">
+    <if_sid>81608</if_sid>
+    <field name="type">^traffic$</field>
+    <field name="subtype">^local$</field>
+    <description>Fortigate Local Traffic - Source:$(srcip)|Service:$(app)|Destination:$(dstip)</description>
+  </rule>
+  <!--
+  Aug 22 19:07:04 fortigate.local date=2022-08-22 time=19:07:04 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661209623443668463 tz="-0400" logid="0100022952" type="event" subtype="system" level="warning" vd="root" logdesc="FortiCloud activation failed" user="auto-join" action="login" msg="FortiCloud service activation failed"-->
+ <rule id="811634" level="3">
+    <if_sid>81608</if_sid>
+    <match>FortiCloud activation failed</match>
+    <description>FortiCloud activation failed - User:$(dstuser)</description>
+  </rule>  
+  <!--
+  Aug 22 20:02:30 fortigate.local date=2022-08-22 time=20:02:30 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661212950357633922 tz="-0400" logid="0100040704" type="event" subtype="system" level="notice" vd="root" logdesc="System performance statistics" action="perf-stats" cpu=0 mem=35 totalsession=257 disk=0 bandwidth="79/71" setuprate=1 disklograte=0 fazlograte=0 freediskstorage=825 sysuptime=436330 waninfo="name=wan1,bytes=11045448983/204411413630,packets=91248455/175706832;name=wan2,bytes=0/0,packets=0/0;" msg="Performance statistics: average CPU: 0, memory:  35, concurrent sessions:  257, setup-rate: 1"-->
+  <rule id="811635" level="3">
+    <if_sid>81608</if_sid>
+    <match>FortiCloud activation failed</match>
+    <description>FortiCloud activation failed - User:$(dstuser)</description>
+  </rule>  
+  <!--
+  Aug 22 20:53:19 fortigate.local date=2022-08-22 time=20:53:19 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661215999304601123 tz="-0400" logid="0101039944" type="event" subtype="vpn" level="error" vd="root" logdesc="SSL VPN alert" action="ssl-alert" tunneltype="ssl" tunnelid=0 remip=x.x.x.x user="N/A" group="N/A" dst_host="N/A" reason="warning" desc="close notify" msg="SSL alerts"-->
+  <rule id="811636" level="3">
+    <if_sid>81608</if_sid>
+    <match>SSL VPN alert</match>
+    <description>Fortigate SSL VPN Alert - Remote IP:$(remip)</description>
+  </rule>
+  <!--Aug 22 23:41:55 fortigate.local date=2022-08-22 time=23:41:55 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661226115385449184 tz="-0400" logid="0100032021" type="event" subtype="system" level="alert" vd="root" logdesc="Admin login disabled" ui="x.x.x.x" action="login" status="failed" reason="exceed_limit" msg="Login disabled from IP x.x.x.x for 60 seconds because of 3 bad attempts"-->
+  <rule id="811637" level="3">
+    <if_sid>81608</if_sid>
+    <match>Admin login disabled</match>
+    <description>Fortigate Admin Login Disabled - Source:$(ui)$(srcip)$(ip)</description>
+  </rule>
+  <!--
+  date=2019-05-15 time=18:03:36 logid="1059028704" type="utm" subtype="app-ctrl" eventtype="app-ctrl-all" level="information" vd="root" eventtime=1557968615 appid=40568 srcip=10.1.100.22 dstip=195.8.215.136 srcport=50798 dstport=443 srcintf="port10" srcintfrole="lan" dstintf="port9" dstintfrole="wan" proto=6 service="HTTPS" direction="outgoing" policyid=1 sessionid=4414 applist="block-social.media" appcat="Web.Client" app="HTTPS.BROWSER" action="pass" hostname="www.dailymotion.com" incidentserialno=1962906680 url="/" msg="Web.Client: HTTPS.BROWSER," apprisk="medium" scertcname="*.dailymotion.com" scertissuer="DigiCert SHA2 High Assurance Server CA"-->
+  <rule id="811638" level="3">
+    <if_sid>81608</if_sid>
+    <regex>applist="(\S+)"</regex>
+    <description>Fortigate Application Log - Source:$(srcip)|Application:$(app)|Service:$(service)|Url:$(url)</description>
+  </rule>
+  
+
 </group>
