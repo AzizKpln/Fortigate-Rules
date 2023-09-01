@@ -1,95 +1,1782 @@
+<!--
+    Advanced Custom Fortigate Decoders For Wazuh SIEM Product. 
+    Author: Aziz Kaplan <aziz.kaplan@infinitumit.com.tr>
+
+-->
+<decoder name="fortigate-firewall-v3">
+  <type>syslog</type>
+  <prematch>date=\S+ time=\.+ devname=\S+ device_id=FG\w+ log_id=\d+ type=\S+ subtype=\S+ pri=\S+ vd=</prematch>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>date="(\.*)"|date=(\.*)\s|date=(\.*)$</regex>
+  <order>date</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>time=(\.*\p\s\.*\p\.*)\s</regex>
+  <order>time</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>device_id="(\.*)"|device_id=(\.*)\s|device_id=(\.*)$</regex>
+  <order>devid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>devname="(\.*)"|devname=(\.*)\s|devname=(\.*)$</regex>
+  <order>devname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>log_id="(\d+)"|log_id=(\d+)</regex>
+  <order>log_id</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>type="(\.*)"|type=(\.*)\s|type=(\.*)$</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>subtype="(\.*)"|subtype=(\.*)\s|subtype=(\.*)$</regex>
+  <order>subtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>pri="(\.*)"|pri=(\.*)\s|pri=(\.*)$</regex>
+  <order>pri</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex>vd="(\.*)"|vd=(\.*)\s|vd=(\.*)$</regex>
+  <order>vd</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex offset="after_parent">proto=\d+ service=(\S+) \.+ status=(\S+) src=(\S+) \.+ dst=(\S+) </regex>
+  <order>protocol,action,srcip,dstip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v3-fields">
+  <parent>fortigate-firewall-v3</parent>
+  <regex offset="after_regex">src_port=(\d+) dst_port=(\d+) </regex>
+  <order>srcport,dstport</order>
+</decoder>
+
+<!--
+  FortiOS 4.0 via syslog
+-->
+<decoder name="fortigate-firewall-v4">
+  <type>syslog</type>
+  <prematch>date=\S+ time=\.+ devname=\S+ device_id=FG\w+ log_id=\d+ type=\S+ subtype=\S+ pri=\S+ status=</prematch>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>date="(\.*)"|date=(\.*)\s|date=(\.*)$</regex>
+  <order>date</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>time=(\.*\p\s\.*\p\.*)\s</regex>
+  <order>time</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>device_id="(\.*)"|device_id=(\.*)\s|device_id=(\.*)$</regex>
+  <order>devid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>devname="(\.*)"|devname=(\.*)\s|devname=(\.*)$</regex>
+  <order>devname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>log_id="(\d+)"|log_id=(\d+)</regex>
+  <order>log_id</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>type="(\.*)"|type=(\.*)\s|type=(\.*)$</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>subtype="(\.*)"|subtype=(\.*)\s|subtype=(\.*)$</regex>
+  <order>subtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>pri="(\.*)"|pri=(\.*)\s|pri=(\.*)$</regex>
+  <order>pri</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex>vd="(\.*)"|vd=(\.*)\s|vd=(\.*)$</regex>
+  <order>vd</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v4-fields">
+  <parent>fortigate-firewall-v4</parent>
+  <regex offset="after_parent">(\S+) \.+ src=(\S+) \.+ src_port=(\d+) dst=(\S+) \.+ dst_port=(\d+) \.*service=\d+/(\w+) </regex>
+  <order>action,srcip,srcport,dstip,dstport,protocol</order>
+</decoder>
+
 <!-- 
-Custom Decoders For Fortigate Firewall DNS Queries
-Author: Aziz Kaplan <aziz.kaplan@infinitumit.com.tr>
-Github: https://github.com/AzizKpln
+  FortiOS 5.0 via syslog 
 -->
-
 
 <!--
-date=2019-05-15 time=15:05:49 logid="1501054802" type="utm" subtype="dns" eventtype="dns-response" level="notice" vd="vdom1" eventtime=1557957949740931155 policyid=1 sessionid=6887 srcip=10.1.100.22 srcport=50002 srcintf="port12" srcintfrole="undefined" dstip=172.16.100.100 dstport=53 dstintf="port11" dstintfrole="undefined" proto=17 profile="dnsfilter_fgd" srcmac="a2:e9:00:ec:40:41" xid=57945 qname="changelogs.ubuntu.com" qtype="AAAA" qtypeval=28 qclass="IN" ipaddr="2001:67c:1560:8008::11" msg="Domain is monitored" action="pass" cat=52 catdesc="Information Technology"
+<decoder name="fortigate-firewall-v5-event-vpn-fields1">
+    <parent>fortigate-firewall-v5</parent>
+    <prematch offset="after_parent">type=event subtype=vpn level=\S+ vd="\.+" logdesc="\.+" msg="\.+" action=</prematch>
+    <regex>logdesc="(\.+)" msg=\.+ action=(\.*) remip=(\S+) locip=(\S+) \.+ status=(\S+)</regex>
+    <order>extra_data,action,dstip,srcip,status</order>
+</decoder>
 -->
 
-<decoder name="fortigate-firewall-dns-v1">
-    <prematch>date=\d\d\d\d-\d\d-\d\d time=\d\d:\d\d:\d\d logid=</prematch>
-    <type>syslog</type>
+<decoder name="fortigate-firewall-v5">
+  <type>syslog</type>
+  <prematch>date=\S+\.+time=\.+devname=\S+\.+devid=\p*FG\S+\.+logid=</prematch>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_parent">"(\S+)" type="(\S+)" subtype=(\S+) eventtype="(\S+)" level="(\S+)"</regex>
-    <order>logid,type,subtype,eventtype,level</order>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>forwardedfor="(\.*)"|forwardedfor=(\.*)\s|forwardedfor=(\.*)$</regex>
+  <order>forwardedfor</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">vd="(\S+)" eventtime=(\S+) policyid=(\S+) sessionid=(\S+)</regex>
-    <order>virtualDomain,eventtime,policyid,sessionid</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>user="(\S+)"|user=(\S+)|dstuser="(\S+)"|dstuser=(\S+)|user="(\.*)"|user=(\.*)\s|user=(\.*)$|dstuser="(\.*)"|dstuser=(\.*)\s|dstuser=(\.*)$</regex>
+  <order>dstuser</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">srcip=(\S+) srcport=(\S+) srcintf="(\S+)" srcintfrole="(\S+)"</regex>
-    <order>srcip,srcport,srcintf,srcintfrole</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>cookies="(\S+)"|cookies=(\S+)|cookies="(\.*)"|cookies=(\.*)\s|cookies=(\.*)$</regex>
+  <order>cookies</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">dstip=(\S+) dstport=(\S+) dstintf="(\S+)" dstintfrole="(\S+)"</regex>
-    <order>dstip,dstport,dstintf,dstintfrole</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dir="(\S+)"|dir=(\S+)|dir="(\.*)"|dir=(\.*)\s|dir=(\.*)$</regex>
+  <order>dir</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">proto=(\S+) profile=(\S+) srcmac="(\S+)" xid=(\S+)</regex>
-    <order>proto,profile,srcmac,xid</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>role="(\S+)"|role=(\S+)|role="(\.*)"|role=(\.*)\s|role=(\.*)$</regex>
+  <order>role</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">qname="(\S+)" qtype="(\S+)" qtypeval=(\S+) qclass="(\S+)"</regex>
-    <order>qname,qtype,qtypeval,qclass</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>result="(\S+)"|result=(\S+)|result="(\.*)"|result=(\.*)\s|result=(\.*)$</regex>
+  <order>result</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">ipaddr="(\S+)"|ipaddr=(\S+) msg="(.*)" action="(\S+)" cat=(\S+)</regex>
-    <order>ipaddr,msg,action,cat</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>init="(\S+)"|init=(\S+)|init="(\.*)"|init=(\.*)\s|init=(\.*)$</regex>
+  <order>init</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v1-fields">
-    <parent>fortigate-firewall-dns-v1</parent>
-    <regex offset="after_regex">catdesc="(\S+)"</regex>
-    <order>catdesc</order>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>tz="(\S+)"|tz=(\S+)</regex>
+  <order>tz</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>action="(\S+")|action=(\S+)|action="(\.*)"|action=(\.*)\s|action=(\.*)$</regex>
+  <order>action</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>agent="(\S+)"|agent=(\S+)|agent="(\.*)"|agent=(\.*)\s|agent=(\.*)$</regex>
+  <order>agent</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>analyticscksum="(\.*)"|analyticscksum=(\.*)\s|analyticscksum=(\.*)$</regex>
+  <order>analyticscksum</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcmac="(\.*)"|srcmac="(\S+)"|srcmac=(\S+)|srcmac="(\.*)"|srcmac=(\.*)\s|srcmac=(\.*)$</regex>
+  <order>srcmac</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>analyticssubmit="(\.*)"|analyticssubmit=(\.*)\s|analyticssubmit=(\.*)$</regex>
+  <order>analyticssubmit</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>app="(\.*)"|app=(\.*)\s|app=(\.*)$|app="(\S+)"|app=(\S+)</regex>
+  <order>app</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>mastersrcmac="(\S+)"|mastersrcmac="(\.*)"|mastersrcmac=(\.*)\s|mastersrcmac=(\.*)$</regex>
+  <order>mastersrcmac</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srchwvendor="(\S+)"|srchwvendor="(\.*)"|srchwvendor=(\.*)\s|srchwvendor=(\.*)$|</regex>
+  <order>srchwvendor</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>error="(\.*)"|error=(\.*)\s|error=(\.*)$|error="(\S+)"</regex>
+  <order>error</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>warning="(\.*)"|warning=(\.*)\s|warning=(\.*)$|warning="(\S+)"</regex>
+  <order>warning</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>info="(\.*)"|info=(\.*)\s|info=(\.*)$|info="(\S+)"</regex>
+  <order>info</order>
 </decoder>
 
 
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>trandisp="(\.*)"|trandisp=(\.*)\s|trandisp=(\.*)$|trandisp="(\S+)"|trandisp=(\S+)</regex>
+  <order>trandisp</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>unauthuser="(\.*)"|unauthuser=(\.*)\s|unauthuser=(\.*)$|unauthuser="(\S+)"|unauthuser=(\S+)</regex>
+  <order>unauthuser</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>osname="(\.*)"|osname=(\.*)\s|osname=(\.*)$|osname="(\S+)"|osname=(\S+)</regex>
+  <order>osname</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>sentbyte="(\.*)"|sentbyte=(\.*)\s|sentbyte=(\.*)$|sentbyte="(\S+)"|sentbyte=(\S+)</regex>
+  <order>sentbyte</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>rcvdbyte="(\.*)"|rcvdbyte=(\.*)\s|rcvdbyte=(\.*)$|rcvdbyte="(\S+)"|rcvdbyte=(\S+)</regex>
+  <order>rcvdbyte</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>transip="(\.*)"|transip=(\.*)\s|transip=(\.*)$|transip="(\S+)"|transip=(\S+)</regex>
+  <order>transip</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcfamily="(\.*)"|srcfamily=(\.*)\s|srcfamily=(\.*)$|srcfamily="(\S+)"|srcfamily=(\S+)</regex>
+  <order>srcfamily</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srchwversion="(\.*)"|srchwversion=(\.*)\s|srchwversion=(\.*)$|srchwversion="(\S+)"|srchwversion=(\S+)</regex>
+  <order>srchwversion</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>transport="(\.*)"|transport=(\.*)\s|transport=(\.*)$|transport="(\S+)"|transport=(\S+)</regex>
+  <order>transport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>applist="(\.*)"|applist=(\.*)\s|applist=(\.*)$|applist="(\S+)"|applist=(\S+)</regex>
+  <order>applist</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>apprisk="(\.*)"|apprisk=(\.*)\s|apprisk=(\.*)$|apprisk="(\S+)"|apprisk=(\S+)</regex>
+  <order>apprisk</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>assignip="(\S+)"|assignip=(\S+)|assignip="(\.*)"|assignip=(\.*)\s|assignip=(\.*)$</regex>
+  <order>assignip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>attack="(\.*)"|attack=(\.*)\s|attack=(\.*)$|attack="(\S+)"|attack=(\S+)</regex>
+  <order>attack</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>attackid="(\.*)"|attackid=(\.*)\s|attackid=(\.*)$</regex>
+  <order>attackid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>cfgattr="(\.*)"|cfgattr=(\.*)\s|cfgattr=(\.*)$</regex>
+  <order>cfgattr</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>cfgobj="(\.*)"|cfgobj=(\.*)\s|cfgobj=(\.*)$</regex>
+  <order>cfgobj</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>cfgpath="(\.*)"|cfgpath=(\.*)\s|cfgpath=(\.*)$</regex>
+  <order>cfgpath</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>cfgtid="(\.*)"|cfgtid=(\.*)\s|cfgtid=(\.*)$</regex>
+  <order>cfgtid</order>
+</decoder>
+
+
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>count="(\.*)"|count=(\.*)\s|count=(\.*)$</regex>
+  <order>count</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>countapp="(\.*)"|countapp=(\.*)\s|countapp=(\.*)$</regex>
+  <order>countapp</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>craction="(\.*)"|craction=(\.*)\s|craction=(\.*)$</regex>
+  <order>craction</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>crlevel="(\.*)"|crlevel=(\.*)\s|crlevel=(\.*)$</regex>
+  <order>crlevel</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>crscore="(\.*)"|crscore=(\.*)\s|crscore=(\.*)$</regex>
+  <order>crscore</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>devid="(\.*)"|devid=(\.*)\s|devid=(\.*)$</regex>
+  <order>devid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>devname="(\.*)"|devname=(\.*)\s|devname=(\.*)$|devname="(\S+")|devname=(\S+)</regex>
+  <order>devname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>direction="(\S+)"|direction="(\.*)"|direction=(\.*)\s|direction=(\.*)$</regex>
+  <order>direction</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dst_host="(\.*)"|dst_host=(\.*)\s|dst_host=(\.*)$</regex>
+  <order>dst_host</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dstcountry="(\.*)"|dstcountry=(\.*)\s|dstcountry=(\.*)$</regex>
+  <order>dstcountry</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dstintf="(\.*)"|dstintf=(\.*)\s|dstintf=(\.*)$</regex>
+  <order>dstintf</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dstintfrole="(\.*)"|dstintfrole=(\.*)\s|dstintfrole=(\.*)$</regex>
+  <order>dstintfrole</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dstip="(\.*)"|dstip=(\.*)\s|dstip=(\.*)$</regex>
+  <order>dstip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dstport="(\.*)"|dstport=(\.*)\s|dstport=(\.*)$</regex>
+  <order>dstport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dtype="(\.*)"|dtype=(\.*)\s|dtype=(\.*)$|dtype="(\S+)"|dtype=(\S+)</regex>
+  <order>dtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>duration="(\.*)"|duration=(\.*)\s|duration=(\.*)$</regex>
+  <order>duration</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>eventtime="(\.*)"|eventtime=(\.*)\s|eventtime=(\.*)$</regex>
+  <order>eventtime</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>eventtype="(\.*)"|eventtype=(\.*)\s|eventtype=(\.*)$</regex>
+  <order>eventtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>filename="(\S+)"|filename=(\S+)|filename="(\.*)"|filename=(\.*)\s|filename=(\.*)$</regex>
+  <order>filename</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>group="(\S+)"|group="(\.*)"|group=(\.*)\s|group=(\.*)$</regex>
+  <order>group</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>stage="(\S+)"|stage=(\S+)|stage="(\.*)"|stage=(\.*)\s|stage=(\.*)$</regex>
+  <order>stage</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>hostname="(\S+)"|hostname="(\.*)"|hostname=(\.*)\s|hostname=(\.*)$</regex>
+  <order>hostname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>incidentserialno="(\.*)"|incidentserialno=(\.*)\s|incidentserialno=(\.*)$</regex>
+  <order>incidentserialno</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>level="(\.*)"|level=(\.*)\s|level=(\.*)$|level="(\S+)|level=(\S+)</regex>
+  <order>level</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>locip="(\S+)"|locip=(\S+)|locip="(\.*)"|locip=(\.*)\s|locip=(\.*)$</regex>
+  <order>locip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>locport="(\S+)"|locport=(\S+)|locport="(\.*)"|locport=(\.*)\s|locport=(\.*)$</regex>
+  <order>locport</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>outintf="(\S+)"|outintf=(\S+)|outintf="(\.*)"|outintf=(\.*)\s|outintf=(\.*)$</regex>
+  <order>outintf</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>logdesc="(\S+)"|logdesc=(\S+)|logdesc="(\.*)"|logdesc=(\.*)\s|logdesc=(\.*)$</regex>
+  <order>logdesc</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>logid="(\.*)"|logid=(\.*)\s|logid=(\.*)$</regex>
+  <order>logid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>sn="(\.*)"|sn=(\.*)\s|sn=(\.*)$</regex>
+  <order>sn</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>logtime="(\.*)"|logtime=(\.*)\s|logtime=(\.*)$</regex>
+  <order>logtime</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>msg="(\S+)"|msg="(\.*)"|msg=(\.*)\s|msg=(\.*)$</regex>
+  <order>msg</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>policyid="(\.*)"|policyid=(\.*)\s|policyid=(\.*)$</regex>
+  <order>policyid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>poluuid="(\.*)"|poluuid=(\.*)\s|poluuid=(\.*)$</regex>
+  <order>poluuid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>profile="(\S+)"|profile=(\S+)|profile="(\.*)"|profile=(\.*)\s|profile=(\.*)$</regex>
+  <order>profile</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>proto="(\S+)"|proto=(\S+)|proto="(\.*)"|proto=(\.*)\s|proto=(\.*)$</regex>
+  <order>proto</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>quarskip="(\.*)"|quarskip=(\.*)\s|quarskip=(\.*)$</regex>
+  <order>quarskip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>rcvdbyte=(\S+)|rcvdbyte="(\.*)"|rcvdbyte=(\.*)\s|rcvdbyte=(\.*)$</regex>
+  <order>rcvdbyte</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>reason="(\.*)"|reason=(\.*)\s|reason=(\.*)$|reason="(\S+)"|reason=(\S+)</regex>
+  <order>reason</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>ref="(\.*)"|ref=(\.*)\s|ref=(\.*)$</regex>
+  <order>ref</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>remip="(\S+)"|remip=(\S+)|remip="(\.*)"|remip=(\.*)\s|remip=(\.*)$</regex>
+  <order>remip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>remport="(\S+)"|remport=(\S+)|remport="(\.*)"|remport=(\.*)\s|remport=(\.*)$</regex>
+  <order>remport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>reqtype="(\S+)"|reqtype=(\S+)|reqtype="(\.*)"|reqtype=(\.*)\s|reqtype=(\.*)$</regex>
+  <order>reqtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>scertcname="(\.*)"|scertcname=(\.*)\s|scertcname=(\.*)$</regex>
+  <order>scertcname</order>
+</decoder>
+
+
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>sentpkt="(\.*)"|sentpkt=(\.*)\s|sentpkt=(\.*)$</regex>
+  <order>sentpkt</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>service="(\S+)"|service=(\S+)|service="(\.*)"|service=(\.*)\s|service=(\.*)$</regex>
+  <order>service</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>sessionid="(\.*)"|sessionid=(\.*)\s|sessionid=(\.*)$</regex>
+  <order>sessionid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>severity="(\.*)"|severity=(\.*)\s|severity=(\.*)$</regex>
+  <order>severity</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srccountry="(\.*)"|srccountry=(\.*)\s|srccountry=(\.*)$|srccountry="(\S+)"|srccountry=(\S+)</regex>
+  <order>srccountry</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcintf="(\.*)"|srcintf=(\.*)\s|srcintf=(\.*)$|srcintf="(\S+)"|srcintf=(\S+)</regex>
+  <order>srcintf</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcintfrole="(\.*)"|srcintfrole=(\.*)\s|srcintfrole=(\.*)$</regex>
+  <order>srcintfrole</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcip="(\.*)"|srcip=(\.*)\s|srcip=(\.*)$</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcport="(\.*)"|srcport=(\.*)\s|srcport=(\.*)$|srcport="(\S+)"|srcport=(\S+)</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>state="(\.*)"|state=(\.*)\s|state=(\.*)$|state="(\S+)"|state=(\S+)</regex>
+  <order>state</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>status="(\.*)"|status=(\.*)\s|status=(\.*)$|status="(\S+)"|status=(\S+)</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>subtype="(\.*)"|subtype=(\.*)\s|subtype=(\.*)$|subtype="(\S+)"|subtype=(\S+)</regex>
+  <order>subtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>time="(\S+)"|time=(\S+)|time="(\.*)"|time=(\.*)\s|time=(\.*)$</regex>
+  <order>time</order>
+</decoder>
+
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>tunnelid="(\.*)"|tunnelid=(\.*)\s|tunnelid=(\.*)$</regex>
+  <order>tunnelid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>tunnelip="(\.*)"|tunnelip=(\.*)\s|tunnelip=(\.*)$|tunnelip="(\S+)"|tunnelip=(\S+)</regex>
+  <order>tunnelip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>tunneltype="(\.*)"|tunneltype=(\.*)\s|tunneltype=(\.*)$|tunneltype="(\S+)"|tunneltype=(\S+)</regex>
+  <order>tunneltype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>type="(\S+)"|type="(\.*)"|type=(\.*)\s|type=(\.*)$</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>ui="(\.*)"|ui=(\.*)\s|ui=(\.*)$</regex>
+  <order>ui</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>url="(\.*)"|url=(\.*)\s|url=(\.*)$</regex>
+  <order>url</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>urlfilteridx="(\.*)"|urlfilteridx=(\.*)\s|urlfilteridx=(\.*)$</regex>
+  <order>urlfilteridx</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>urlfilterlist="(\.*)"|urlfilterlist=(\.*)\s|urlfilterlist=(\.*)$</regex>
+  <order>urlfilterlist</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>user="(\.*)"|user=(\.*)\s|user=(\.*)$|user="(\S+)"</regex>
+  <order>user</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>utmaction=(\S+)|utmaction="(\S+)"|utmaction="(\.*)"|utmaction=(\.*)\s|utmaction=(\.*)$</regex>
+  <order>utmaction</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>>vd="(\S+)"|vd="(\.*)"|vd=(\.*)\s|vd=(\.*)$</regex>
+  <order>vd</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>virus="(\S+)"|virus="(\.*)"|virus=(\.*)\s|virus=(\.*)$</regex>
+  <order>virus</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>virusid="(\S+)"|virusid=(\S+)|virusid="(\.*)"|virusid=(\.*)\s|virusid=(\.*)$</regex>
+  <order>virusid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>vpntunnel="(\S+)"|vpntunnel=(\S+)|vpntunnel="(\.*)"|vpntunnel=(\.*)\s|vpntunnel=(\.*)$</regex>
+  <order>vpntunnel</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>xauthgroup="(\S+)"|xauthgroup=(\S+)|xauthgroup="(\.*)"|xauthgroup=(\.*)\s|xauthgroup=(\.*)$</regex>
+  <order>xauthgroup</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>xauthuser="(\S+)"|xauthuser=(\S+)|xauthuser="(\.*)"|xauthuser=(\.*)\s|xauthuser=(\.*)$</regex>
+  <order>xauthuser</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>qname="(\S+)"</regex>
+  <order>qname</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>ipaddr="(\S+)"</regex>
+  <order>ipaddr</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>user="(\S+)"</regex>
+  <order>user</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>devtype="(\S+)"|devtype=(\S+)</regex>
+  <order>devtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>subtype="(\S+)"</regex>
+  <order>subtype</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>eventtype="(\S+)"</regex>
+  <order>eventtype</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>level="(\S+)"</regex>
+  <order>level</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>policyid=(\S+)</regex>
+  <order>policyid</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>poluuid="(\S+)"</regex>
+  <order>poluuid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>policytype="(\S+)"</regex>
+  <order>policytype</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcintfrole="(\S+)"</regex>
+  <order>srcintfrole</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>srcuuid="(\S+)"</regex>
+  <order>srcuuid</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>dstuuid="(\S+)"</regex>
+  <order>dstuuid</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+  <parent>fortigate-firewall-v5</parent>
+  <regex>error="(\S+)"</regex>
+  <order>error</order>
+</decoder>
+
+
+
+<!--Aug 23 01:05:28 fortigate.local date=2022-08-23 time=01:05:28 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661231127465281933 tz="-0400" logid="0100044547" type="event" subtype="system" level="information" vd="root" logdesc="Object attribute configured" user="admin" ui="GUI(x.x.x.x)" action="Add" cfgtid=6881300 cfgpath="firewall.policy" cfgobj="8" cfgattr="uuid[3249c840-22a1-51ed-dbb6-54082b2b52c4]name[TEST-TEST]srcintf[internal]dstintf[internal]action[accept]srcaddr[all]dstaddr[EDR]srcaddr6[]dstaddr6[]src-vendor-mac[]schedule[always]service[ALL]groups[]users[]fsso-groups[]comments[TEST]custom-log-fields[]" msg="Add firewall.policy 8"-->
+
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>msg="(\S+)"|msg=(\S+)|msg="(\.*)"|msg=(\.*)\s|msg=(\.*)$</regex>
+    <order>msg</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>cfgobj="(\S+)"|cfgobj=(\S+)|cfgobj="(\.*)"|cfgobj=(\.*)\s|cfgobj=(\.*)$</regex>
+    <order>cfgobj</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>cfgpath="(\S+)"|cfgpath=(\S+)|cfgpath="(\.*)"|cfgpath=(\.*)\s|cfgpath=(\.*)$</regex>
+    <order>cfgpath</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>cfgtid="(\S+)"|cfgtid=(\S+)|cfgtid="(\.*)"|cfgtid=(\.*)\s|cfgtid=(\.*)$</regex>
+    <order>cfgtid</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>logdesc="(\S+)"|logdesc=(\S+)|logdesc="(\.*)"|logdesc=(\.*)\s|logdesc=(\.*)$</regex>
+    <order>logdesc</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>ui="(\S+)"|ui=(\S+)|ui="(\.*)"|ui=(\.*)\s|ui=(\.*)$</regex>
+    <order>ui</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>actions="(\S+)"|actions=(\S+)|actions="(\.*)"|actions=(\.*)\s|actions=(\.*)$</regex>
+    <order>actions</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>dstuser="(\S+)"|dstuser=(\S+)|dstuser="(\.*)"|dstuser=(\.*)\s|dstuser=(\.*)$|user="(\S+)"|user=(\S+)|user="(\.*)"|user=(\.*)\s|user=(\.*)$</regex>
+    <order>dstuser</order>
+</decoder>
 <!--
-date=2019-05-15 time=15:05:49 logid="1500054000" type="utm" subtype="dns" eventtype="dns-query" level="information" vd="vdom1" eventtime=1557957949653103543 policyid=1 sessionid=6887 srcip=10.1.100.22 srcport=50002 srcintf="port12" srcintfrole="undefined" dstip=172.16.100.100 dstport=53 dstintf="port11" dstintfrole="undefined" proto=17 profile="dnsfilter_fgd" srcmac="a2:e9:00:ec:40:41" xid=57945 qname="changelogs.ubuntu.com" qtype="AAAA" qtypeval=28 qclass="IN"
+Aug 23 00:50:17 fortigate.local date=2022-08-23 time=00:50:16 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661230216480453628 tz="-0400" logid="0100032001" type="event" subtype="system" level="information" vd="root" logdesc="Admin login successful" sn="1661230216" user="admin" ui="https(x.x.x.x)" method="https" srcip=x.x.x.x dstip=x.x.x.x action="login" status="success" reason="none" profile="super_admin" msg="Administrator admin logged in successfully from https(x.x.x.x)"
 -->
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>logdesc="(\S+)"|logdesc=(\S+)|logdesc="(\.*)"|logdesc=(\.*)\s|logdesc=(\.*)$</regex>
+    <order>logdesc</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>sn="(\S+)"|sn=(\S+)|sn="(\.*)"|sn=(\.*)\s|sn=(\.*)$</regex>
+    <order>sn</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>ui="(\S+)"|ui=(\S+)|ui="(\.*)"|ui=(\.*)\s|ui=(\.*)$</regex>
+    <order>ui</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>method="(\S+)"|method=(\S+)|method="(\.*)"|method=(\.*)\s|method=(\.*)$</regex>
+    <order>method</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>dstuser="(\S+)"|dstuser=(\S+)|dstuser="(\.*)"|dstuser=(\.*)\s|dstuser=(\.*)$|user="(\S+)"|user=(\S+)|user="(\.*)"|user=(\.*)\s|user=(\.*)$</regex>
+    <order>dstuser</order>
+</decoder>
+<!--
+Aug 22 21:02:25 fortigate.local date=2022-08-22 time=21:02:25 devname="FGT60E-Local" devid="FGT60ETKXXXXXXXX" eventtime=1661216544233315652 tz="-0400" logid="0107045124" type="event" subtype="endpoint" level="warning" vd="root" logdesc="FortiClient VPN connected" ip=10.212.134.200 fctuid="82FD2B5D62BF9E611DE857B012BC9D3F" sn="FGT60ETKXXXXXXXX" intf="wan1" user="user_name" msg="FortiClient VPN is connected."
+-->
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>ip="(\.+)"|ip=(\S+)|ip="(\S+)"|ip="(\S+)"|ip="(\S+)"|ip="(\S+)"|ip="(\.+)"</regex>
+    <order>ip</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>srcip="(\.+)"|srcip=(\S+)|srcip="(\S+)"|srcip="(\S+)"|srcip="(\S+)"|srcip="(\S+)"|srcip="(\.+)"</regex>
+    <order>srcip</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>fctuid="(\.+)"|fctuid=(\S+)|fctuid="(\S+)"|fctuid="(\S+)"|fctuid="(\S+)"|fctuid="(\S+)"|fctuid="(\.+)"</regex>
+    <order>fctuidsn</order>
+</decoder>
+<decoder name="fortigate-firewall-v5">
+    <parent>fortigate-firewall-v5</parent>
+    <regex>extra_data="(\.+)"|extra_data=(\S+)|extra_data="(\S+)"|extra_data="(\S+)"|extra_data="(\S+)"|extra_data="(\S+)"|extra_data="(\.+)"</regex>
+    <order>extra_data</order>
+</decoder>
 
-<decoder name="fortigate-firewall-dns-v2">
-    <prematch>date=\d\d\d\d-\d\d-\d\d time=\d\d:\d\d:\d\d logid=</prematch>
-    <type>syslog</type>
+
+
+
+
+<!-- 
+  FortiOS 6.0 via syslog 
+-->
+<decoder name="fortigate-firewall-v6">
+  <type>syslog</type>
+  <prematch>date=\d\d\d\d-\d\d-\d\d time=\.+logid=\.+type=\.+subtype=\.+</prematch>
 </decoder>
-<decoder name="fortigate-firewall-dns-v2-fields">
-    <parent>fortigate-firewall-dns-v2</parent>
-    <regex offset="after_parent">"(\S+)" type="(\S+)" subtype=(\S+) eventtype="(\S+)" level="(\S+)"</regex>
-    <order>logid,type,subtype,eventtype,level</order>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>imei="(\.*)"|imei=(\.*)\s|imei=(\.*)$</regex>
+  <order>imei</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v2-fields">
-    <parent>fortigate-firewall-dns-v2</parent>
-    <regex offset="after_regex">vd="(\S+)" eventtime=(\S+) policyid=(\S+) sessionid=(\S+)</regex>
-    <order>virtualDomain,eventtime,policyid,sessionid</order>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>sn="(\.*)"|sn=(\.*)\s|sn=(\.*)$</regex>
+  <order>sn</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v2-fields">
-    <parent>fortigate-firewall-dns-v2</parent>
-    <regex offset="after_regex">srcip=(\S+) srcport=(\S+) srcintf="(\S+)" srcintfrole="(\S+)"</regex>
-    <order>srcip,srcport,srcintf,srcintfrole</order>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>action="(\S+)"|action=(\S+)|action="(\.*)"|action=(\.*)\s|action=(\.*)$</regex>
+  <order>action</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v2-fields">
-    <parent>fortigate-firewall-dns-v2</parent>
-    <regex offset="after_regex">dstip=(\S+) dstport=(\S+) dstintf="(\S+)" dstintfrole="(\S+)"</regex>
-    <order>dstip,dstport,dstintf,dstintfrole</order>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>agent="(\.*)"|agent=(\.*)\s|agent=(\.*)$</regex>
+  <order>agent</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v2-fields">
-    <parent>fortigate-firewall-dns-v2</parent>
-    <regex offset="after_regex">proto=(\S+) profile=(\S+) srcmac="(\S+)" xid=(\S+)</regex>
-    <order>proto,profile,srcmac,xid</order>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>analyticscksum="(\.*)"|analyticscksum=(\.*)\s|analyticscksum=(\.*)$</regex>
+  <order>analyticscksum</order>
 </decoder>
-<decoder name="fortigate-firewall-dns-v2-fields">
-    <parent>fortigate-firewall-dns-v2</parent>
-    <regex offset="after_regex">qname="(\S+)" qtype="(\S+)" qtypeval=(\S+) qclass="(\S+)"</regex>
-    <order>qname,qtype,qtypeval,qclass</order>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>analyticssubmit="(\.*)"|analyticssubmit=(\.*)\s|analyticssubmit=(\.*)$</regex>
+  <order>analyticssubmit</order>
 </decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>apn="(\.*)"|apn=(\.*)\s|apn=(\.*)$</regex>
+  <order>apn</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>app="(\.*)"|app=(\.*)\s|app=(\.*)$</regex>
+  <order>app</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>appact="(\.*)"|appact=(\.*)\s|appact=(\.*)$</regex>
+  <order>appact</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>appcat="(\.*)"|appcat=(\.*)\s|appcat=(\.*)$</regex>
+  <order>appcat</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>appid="(\.*)"|appid=(\.*)\s|appid=(\.*)$</regex>
+  <order>appid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>applist="(\.*)"|applist=(\.*)\s|applist=(\.*)$</regex>
+  <order>applist</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>apprisk="(\.*)"|apprisk=(\.*)\s|apprisk=(\.*)$</regex>
+  <order>apprisk</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>attack="(\.*)"|attack=(\.*)\s|attack=(\.*)$</regex>
+  <order>attack</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>attackid="(\.*)"|attackid=(\.*)\s|attackid=(\.*)$</regex>
+  <order>attackid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>method="(\.*)"|method=(\.*)\s|method=(\.*)$</regex>
+  <order>method</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>certhash="(\.*)"|certhash=(\.*)\s|certhash=(\.*)$</regex>
+  <order>certhash</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>carrier="(\.*)"|carrier=(\.*)\s|carrier=(\.*)$</regex>
+  <order>carrier</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>cat="(\.*)"|cat=(\.*)\s|cat=(\.*)$</regex>
+  <order>cat</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>catdesc="(\.*)"|catdesc=(\.*)\s|catdesc=(\.*)$</regex>
+  <order>catdesc</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>channeltype="(\.*)"|channeltype=(\.*)\s|channeltype=(\.*)$</regex>
+  <order>channeltype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>count="(\.*)"|count=(\.*)\s|count=(\.*)$</regex>
+  <order>count</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>countapp="(\.*)"|countapp=(\.*)\s|countapp=(\.*)$</regex>
+  <order>countapp</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>countav="(\.*)"|countav=(\.*)\s|countav=(\.*)$</regex>
+  <order>countav</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>countdlp="(\.*)"|countdlp=(\.*)\s|countdlp=(\.*)$</regex>
+  <order>countdlp</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>countdns="(\.*)"|countdns=(\.*)\s|countdns=(\.*)$</regex>
+  <order>countdns</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>countips="(\.*)"|countips=(\.*)\s|countips=(\.*)$</regex>
+  <order>countips</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>countssh="(\.*)"|countssh=(\.*)\s|countssh=(\.*)$</regex>
+  <order>countssh</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>craction="(\.*)"|craction=(\.*)\s|craction=(\.*)$</regex>
+  <order>craction</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>crlevel="(\.*)"|crlevel=(\.*)\s|crlevel=(\.*)$</regex>
+  <order>crlevel</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>crscore="(\.*)"|crscore=(\.*)\s|crscore=(\.*)$</regex>
+  <order>crscore</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>rsrp="(\.*)"|rsrp=(\.*)\s|rsrp=(\.*)$</regex>
+  <order>rsrp</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>signalstrength="(\.*)"|signalstrength=(\.*)\s|signalstrength=(\.*)$</regex>
+  <order>signalstrength</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>rsrq="(\.*)"|rsrq=(\.*)\s|rsrq=(\.*)$</regex>
+  <order>rsrq</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>rssi="(\.*)"|rssi=(\.*)\s|rssi=(\.*)$</regex>
+  <order>rssi</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>devcategory="(\.*)"|devcategory=(\.*)\s|devcategory=(\.*)$</regex>
+  <order>devcategory</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>devtype="(\S+)"|devtype=(\S+)|devtype="(\.*)"|devtype=(\.*)\s|devtype=(\.*)$</regex>
+  <order>devtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>direction="(\.*)"|direction=(\.*)\s|direction=(\.*)$</regex>
+  <order>direction</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dlpextra="(\.*)"|dlpextra=(\.*)\s|dlpextra=(\.*)$</regex>
+  <order>dlpextra</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstcountry="(\.*)"|dstcountry=(\.*)\s|dstcountry=(\.*)$</regex>
+  <order>dstcountry</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstintf="(\.*)"|dstintf=(\.*)\s|dstintf=(\.*)$</regex>
+  <order>dstintf</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstintfrole="(\.*)"|dstintfrole=(\.*)\s|dstintfrole=(\.*)$</regex>
+  <order>dstintfrole</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstip="(\.*)"|dstip=(\.*)\s|dstip=(\.*)$</regex>
+  <order>dstip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstname="(\.*)"|dstname=(\.*)\s|dstname=(\.*)$</regex>
+  <order>dstname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstport="(\.*)"|dstport=(\.*)\s|dstport=(\.*)$</regex>
+  <order>dstport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dstuuid="(\.*)"|dstuuid=(\.*)\s|dstuuid=(\.*)$</regex>
+  <order>dstuuid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>dtype="(\.*)"|dtype=(\.*)\s|dtype=(\.*)$</regex>
+  <order>dtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>duration="(\.*)"|duration=(\.*)\s|duration=(\.*)$</regex>
+  <order>duration</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>epoch="(\.*)"|epoch=(\.*)\s|epoch=(\.*)$</regex>
+  <order>epoch</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>eventid="(\.*)"|eventid=(\.*)\s|eventid=(\.*)$</regex>
+  <order>eventid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>eventtime="(\.*)"|eventtime=(\.*)\s|eventtime=(\.*)$</regex>
+  <order>eventtime</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>eventtype="(\.*)"|eventtype=(\.*)\s|eventtype=(\.*)$</regex>
+  <order>eventtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filename="(\.*)"|filename=(\.*)\s|filename=(\.*)$</regex>
+  <order>filename</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filesize="(\.*)"|filesize=(\.*)\s|filesize=(\.*)$</regex>
+  <order>filesize</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filetype="(\.*)"|filetype=(\.*)\s|filetype=(\.*)$</regex>
+  <order>filetype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filtercat="(\.*)"|filtercat=(\.*)\s|filtercat=(\.*)$</regex>
+  <order>filtercat</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filteridx="(\.*)"|filteridx=(\.*)\s|filteridx=(\.*)$</regex>
+  <order>filteridx</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filtername="(\.*)"|filtername=(\.*)\s|filtername=(\.*)$</regex>
+  <order>filtername</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>filtertype="(\.*)"|filtertype=(\.*)\s|filtertype=(\.*)$</regex>
+  <order>filtertype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>hostname="(\S+)"|hostname="(\.*)"|hostname=(\.*)\s|hostname=(\.*)$</regex>
+  <order>hostname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>iccid="(\.*)"|iccid=(\.*)\s|iccid=(\.*)$</regex>
+  <order>iccid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>icmpcode="(\.*)"|icmpcode=(\.*)\s|icmpcode=(\.*)$</regex>
+  <order>icmpcode</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>icmpid="(\.*)"|icmpid=(\.*)\s|icmpid=(\.*)$</regex>
+  <order>icmpid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>icmptype="(\.*)"|icmptype=(\.*)\s|icmptype=(\.*)$</regex>
+  <order>icmptype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>imsi="(\.*)"|imsi=(\.*)\s|imsi=(\.*)$</regex>
+  <order>imsi</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>incidentserialno="(\.*)"|incidentserialno=(\.*)\s|incidentserialno=(\.*)$</regex>
+  <order>incidentserialno</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>ip="(\.*)"|ip=(\.*)\s|ip=(\.*)$</regex>
+  <order>ip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>ipaddr="(\.*)"|ipaddr=(\.*)\s|ipaddr=(\.*)$</regex>
+  <order>ipaddr</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>lanin="(\.*)"|lanin=(\.*)\s|lanin=(\.*)$</regex>
+  <order>lanin</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>lanout="(\.*)"|lanout=(\.*)\s|lanout=(\.*)$</regex>
+  <order>lanout</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>level="(\.*)"|level=(\.*)\s|level=(\.*)$</regex>
+  <order>level</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>logdesc="(\.*)"|logdesc=(\.*)\s|logdesc=(\.*)$</regex>
+  <order>logdesc</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>logid="(\.*)"|logid=(\.*)\s|logid=(\.*)$</regex>
+  <order>logid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>login="(\.*)"|login=(\.*)\s|login=(\.*)$</regex>
+  <order>login</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>mastersrcmac="(\.*)"|mastersrcmac=(\.*)\s|mastersrcmac=(\.*)$</regex>
+  <order>mastersrcmac</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>msg="(\.*)"|msg=(\.*)\s|msg=(\.*)$</regex>
+  <order>msg</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>osname="(\.*)"|osname=(\.*)\s|osname=(\.*)$</regex>
+  <order>osname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>phonenumber="(\.*)"|phonenumber=(\.*)\s|phonenumber=(\.*)$</regex>
+  <order>phonenumber</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>plan="(\.*)"|plan=(\.*)\s|plan=(\.*)$</regex>
+  <order>plan</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>policyid="(\.*)"|policyid=(\.*)\s|policyid=(\.*)$</regex>
+  <order>policyid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>policymode="(\S+)"|policymode=(\S+)|policymode="(\.*)"|policymode=(\.*)\s|policymode=(\.*)$</regex>
+  <order>policymode</order>
+</decoder>
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>mode=(\S+)|mode="(\S+)"|mode="(\.*)"|mode=(\.*)\s|mode=(\.*)$</regex>
+  <order>mode</order>
+</decoder>
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>policytype="(\.*)"|policytype=(\.*)\s|policytype=(\.*)$</regex>
+  <order>policytype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>poluuid="(\.*)"|poluuid=(\.*)\s|poluuid=(\.*)$</regex>
+  <order>poluuid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>profile="(\.*)"|profile=(\.*)\s|profile=(\.*)$</regex>
+  <order>profile</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>proto="(\.*)"|proto=(\.*)\s|proto=(\.*)$</regex>
+  <order>proto</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>qclass="(\.*)"|qclass=(\.*)\s|qclass=(\.*)$</regex>
+  <order>qclass</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>qname="(\.*)"|qname=(\.*)\s|qname=(\.*)$</regex>
+  <order>qname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>qtype="(\.*)"|qtype=(\.*)\s|qtype=(\.*)$</regex>
+  <order>qtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>qtypeval="(\.*)"|qtypeval=(\.*)\s|qtypeval=(\.*)$</regex>
+  <order>qtypeval</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>quarskip="(\.*)"|quarskip=(\.*)\s|quarskip=(\.*)$</regex>
+  <order>quarskip</order>
+</decoder>
+
+
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>rcvdpkt="(\.*)"|rcvdpkt=(\.*)\s|rcvdpkt=(\.*)$</regex>
+  <order>rcvdpkt</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>reason="(\.*)"|reason=(\.*)\s|reason=(\.*)$</regex>
+  <order>reason</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>ref="(\.*)"|ref=(\.*)\s|ref=(\.*)$</regex>
+  <order>ref</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>reqtype="(\.*)"|reqtype=(\.*)\s|reqtype=(\.*)$</regex>
+  <order>reqtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>rx_diff="(\.*)"|rx_diff=(\.*)\s|rx_diff=(\.*)$</regex>
+  <order>rx_diff</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>scertcname="(\.*)"|scertcname=(\.*)\s|scertcname=(\.*)$</regex>
+  <order>scertcname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>scertissuer="(\.*)"|scertissuer=(\.*)\s|scertissuer=(\.*)$</regex>
+  <order>scertissuer</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>service="(\.*)"|service=(\.*)\s|service=(\.*)$</regex>
+  <order>service</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>sessionid="(\.*)"|sessionid=(\.*)\s|sessionid=(\.*)$</regex>
+  <order>sessionid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>severity="(\.*)"|severity=(\.*)\s|severity=(\.*)$</regex>
+  <order>severity</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>sinr="(\.*)"|sinr=(\.*)\s|sinr=(\.*)$</regex>
+  <order>sinr</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>slot="(\.*)"|slot=(\.*)\s|slot=(\.*)$</regex>
+  <order>slot</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srccountry="(\.*)"|srccountry=(\.*)\s|srccountry=(\.*)$</regex>
+  <order>srccountry</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcintf="(\.*)"|srcintf=(\.*)\s|srcintf=(\.*)$</regex>
+  <order>srcintf</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcintfrole="(\.*)"|srcintfrole=(\.*)\s|srcintfrole=(\.*)$</regex>
+  <order>srcintfrole</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcip="(\.*)"|srcip=(\.*)\s|srcip=(\.*)$</regex>
+  <order>srcip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcmac="(\.*)"|srcmac=(\.*)\s|srcmac=(\.*)$</regex>
+  <order>srcmac</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcname="(\.*)"|srcname=(\.*)\s|srcname=(\.*)$</regex>
+  <order>srcname</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcport="(\.*)"|srcport=(\.*)\s|srcport=(\.*)$</regex>
+  <order>srcport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcserver="(\.*)"|srcserver=(\.*)\s|srcserver=(\.*)$</regex>
+  <order>srcserver</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>srcuuid="(\.*)"|srcuuid=(\.*)\s|srcuuid=(\.*)$</regex>
+  <order>srcuuid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>status="(\.*)"|status=(\.*)\s|status=(\.*)$</regex>
+  <order>status</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>subtype="(\.*)"|subtype=(\.*)\s|subtype=(\.*)$</regex>
+  <order>subtype</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>temperature="(\.*)"|temperature=(\.*)\s|temperature=(\.*)$</regex>
+  <order>temperature</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>time="(\.*)"|time=(\.*)\s|time=(\.*)$</regex>
+  <order>time</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>trandisp="(\.*)"|trandisp=(\.*)\s|trandisp=(\.*)$</regex>
+  <order>trandisp</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>transip="(\.*)"|transip=(\.*)\s|transip=(\.*)$</regex>
+  <order>transip</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>transport="(\.*)"|transport=(\.*)\s|transport=(\.*)$</regex>
+  <order>transport</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>tx="(\.*)"|tx=(\.*)\s|tx=(\.*)$</regex>
+  <order>tx</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>tx_diff="(\.*)"|tx_diff=(\.*)\s|tx_diff=(\.*)$</regex>
+  <order>tx_diff</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>type="(\.*)"|type=(\.*)\s|type=(\.*)$</regex>
+  <order>type</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>url="(\.*)"|url=(\.*)\s|url=(\.*)$|url="(\S+)"|url=(\S+)</regex>
+  <order>url</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>utmaction="(\.*)"|utmaction=(\.*)\s|utmaction=(\.*)$</regex>
+  <order>utmaction</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>utmref="(\.*)"|utmref=(\.*)\s|utmref=(\.*)$</regex>
+  <order>utmref</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>vd="(\.*)"|vd=(\.*)\s|vd=(\.*)$</regex>
+  <order>vd</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>virus="(\.*)"|virus=(\.*)\s|virus=(\.*)$</regex>
+  <order>virus</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>virusid="(\.*)"|virusid=(\.*)\s|virusid=(\.*)$</regex>
+  <order>virusid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>wanin="(\.*)"|wanin=(\.*)\s|wanin=(\.*)$</regex>
+  <order>wanin</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>wanout="(\.*)"|wanout=(\.*)\s|wanout=(\.*)$</regex>
+  <order>wanout</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>xid="(\.*)"|xid=(\.*)\s|xid=(\.*)$</regex>
+  <order>xid</order>
+</decoder>
+
+<decoder name="fortigate-firewall-v6">
+  <parent>fortigate-firewall-v6</parent>
+  <regex>user="(\.*)"|user=(\.*)\s|user=(\.*)$</regex>
+  <order>dstuser</order>
+</decoder>
+
